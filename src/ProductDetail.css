@@ -455,8 +455,92 @@
 }
 
 @media (max-width: 768px) {
+  .detail-header {
+    padding: 0 4vw;
+  }
+  .detail-header .logo {
+    font-size: 1.6rem;
+  }
+  .back-link {
+    font-size: 0.95rem;
+    gap: 4px;
+  }
+  .back-link span {
+    display: none !important;
+  }
+  
+  .detail-main-container {
+    padding: 4vh 4vw;
+    gap: 5vh;
+  }
+  .detail-name {
+    font-size: 2.2rem;
+    margin-bottom: 2vh;
+  }
+  .detail-intro {
+    font-size: 0.95rem;
+    margin-bottom: 3vh;
+  }
+  .detail-price {
+    font-size: 1.4rem;
+  }
+  .detail-category {
+    font-size: 0.75rem;
+  }
+
+  .rec-title {
+    font-size: 1.8rem;
+    margin-bottom: 4vh;
+  }
+  .rec-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4vw;
+  }
+  .rec-name, .rec-price {
+    font-size: 0.9rem;
+  }
+
+  .tab-headers {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .tab-header-btn {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+  .tab-content {
+    font-size: 0.85rem;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .size-selectors {
+    gap: 8px;
+  }
+  .size-selector-btn {
+    width: 50px;
+    height: 38px;
+    font-size: 0.75rem;
+  }
+  .color-selector-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .color-dot {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .detail-header .logo {
+    font-size: 1.3rem;
+  }
+  .back-link span {
+    display: none; /* Just show the arrow to prevent navbar clutter */
+  }
   .rec-grid {
     grid-template-columns: 1fr;
-    gap: 4vh;
   }
 }

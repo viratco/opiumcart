@@ -1946,7 +1946,7 @@ header {
     padding: 0 4vw;
   }
   .logo {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   .icon-btn {
     width: 38px;
@@ -1955,6 +1955,14 @@ header {
   .icon-btn svg {
     width: 16px;
     height: 16px;
+  }
+  /* Premium mobile header: hide extra buttons and nav links to prevent clutter & overlap */
+  .shop-nav-link {
+    display: none !important;
+  }
+  .header-right .icon-btn[aria-label="Search"],
+  .header-right .icon-btn[aria-label="Profile"] {
+    display: none !important;
   }
 
   /* Giant text stacked layout */
