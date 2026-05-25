@@ -70,7 +70,7 @@ export default function Cart() {
           <ArrowLeftIcon />
           <span>Continue Shopping</span>
         </Link>
-        <h1 className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>wear the vibe</h1>
+        <h1 className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>opiumcart</h1>
         <div className="cart-header-right">
           <span className="cart-item-count">{cartItems.reduce((s, i) => s + i.quantity, 0)} items</span>
         </div>
@@ -213,7 +213,7 @@ export default function Cart() {
       )}
 
       <footer className="cart-footer">
-        © 2026 Velour All rights reserved
+        © 2026 opiumcart All rights reserved
       </footer>
     </div>
   );

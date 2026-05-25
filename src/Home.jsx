@@ -261,7 +261,7 @@ my fits.`,
               Shop
             </span>
           </div>
-          <h1 className="logo" onClick={() => navigate('/products')} style={{ cursor: 'pointer' }}>wear the vibe</h1>
+          <h1 className="logo" onClick={() => navigate('/products')} style={{ cursor: 'pointer' }}>opiumcart</h1>
           <div className="header-right">
             <button className="icon-btn" aria-label="Search">
               <SearchIcon />
@@ -561,7 +561,7 @@ my fits.`,
         {/* Top Header Row */}
         <div className="carousel-header">
           <div className="c-header-col-1 reveal-up">
-            <h2>©velour -<br />jacket momento</h2>
+            <h2>©opiumcart -<br />jacket momento</h2>
           </div>
           <div className="c-header-col-2 reveal-up" style={{ transitionDelay: '0.1s' }}>
             <span className="c-header-year">2026</span>
@@ -826,7 +826,7 @@ my fits.`,
             <a href="#">Privacy Policy</a>
           </div>
           <span className="footer-copyright">
-            © 2026 Velour All rights reserved
+            © 2026 opiumcart All rights reserved
           </span>
         </div>
       </footer>

@@ -65,7 +65,7 @@ export default function Products() {
           <ArrowLeftIcon />
           <span>Back to Home</span>
         </Link>
-        <h1 className="logo">wear the vibe</h1>
+        <h1 className="logo">opiumcart</h1>
         <div className="header-right">
           <button className="icon-btn" aria-label="Cart" style={{ position: 'relative' }} onClick={() => navigate('/cart')}>
             <BagIcon />
@@ -132,7 +132,7 @@ export default function Products() {
 
       {/* Simple Footer */}
       <footer className="products-footer">
-        © 2026 Velour All rights reserved
+        © 2026 opiumcart All rights reserved
       </footer>
     </div>
   );

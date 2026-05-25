@@ -5,7 +5,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const saved = localStorage.getItem('velour_cart');
+      const saved = localStorage.getItem('opiumcart_cart');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -14,7 +14,7 @@ export function CartProvider({ children }) {
 
   // Persist to localStorage whenever cart changes
   useEffect(() => {
-    localStorage.setItem('velour_cart', JSON.stringify(cartItems));
+    localStorage.setItem('opiumcart_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product, size = 'M', color = 'Dusk Black') => {

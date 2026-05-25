@@ -86,7 +86,7 @@ export default function ProductDetail() {
           <ArrowLeftIcon />
           <span>Back to Catalog</span>
         </Link>
-        <h1 className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>wear the vibe</h1>
+        <h1 className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>opiumcart</h1>
         <div className="header-right">
           <button className="icon-btn" aria-label="Cart" style={{ position: 'relative' }} onClick={() => navigate('/cart')}>
             <BagIcon />
@@ -243,7 +243,7 @@ export default function ProductDetail() {
 
       {/* Editorial Footer */}
       <footer className="detail-footer">
-        © 2026 Velour All rights reserved
+        © 2026 opiumcart All rights reserved
       </footer>
     </div>
   );
