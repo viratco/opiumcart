@@ -2448,41 +2448,52 @@ header {
   }
 
   .carousel-header {
-    padding: 0 6vw;
-    margin-bottom: 6vw;
-    flex-direction: column;
-    gap: 6vw;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 6vw !important;
+    box-sizing: border-box !important;
+    pointer-events: auto !important;
+    margin-bottom: 6vw !important;
   }
 
-  .c-header-left {
-    gap: 3vw;
+  .c-header-col-1, 
+  .c-header-col-2, 
+  .c-header-col-3, 
+  .c-header-col-4 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    height: auto !important;
   }
 
-  .c-header-left h2 {
-    font-size: 8.5vw;
+  .c-header-col-1 h2 {
+    font-size: 5vw !important;
+    line-height: 1.1 !important;
   }
 
-  .c-header-year {
-    font-size: 3.5vw;
-  }
-
-  .c-header-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .c-header-label {
-    font-size: 4vw;
+  /* Hide middle columns on mobile to give arrows full room */
+  .c-header-col-2, 
+  .c-header-col-3 {
+    display: none !important;
   }
 
   .c-nav-buttons {
-    gap: 2vw;
+    display: flex !important;
+    gap: 3vw !important;
   }
 
   .c-nav-buttons .nav-circle-btn {
-    width: 12vw;
-    height: 12vw;
-    font-size: 5vw;
+    width: 12vw !important;
+    height: 12vw !important;
+    font-size: 5vw !important;
   }
 
   .carousel-body {
