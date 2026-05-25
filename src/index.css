@@ -1908,6 +1908,12 @@ header {
     height: auto;
   }
 
+  .main-wrapper {
+    scroll-snap-type: none !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+
   .app-container {
     height: 135vh; /* Extends vertically to accommodate stacked sections */
     min-height: 100vh;
