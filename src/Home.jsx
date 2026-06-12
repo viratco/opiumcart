@@ -106,10 +106,84 @@ export default function Home() {
 
     rafId = requestAnimationFrame(tick);
 
+
+
+    // 4. Premium Custom Cursor (Lerp + Event Delegation)
+    const dot = document.querySelector('.custom-cursor-dot');
+    const follower = document.querySelector('.custom-cursor-follower');
+    
+    let mouseX = -100;
+    let mouseY = -100;
+    let followerX = -100;
+    let followerY = -100;
+    let cursorRafId = null;
+    let hasMoved = false;
+
+    const handleMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!hasMoved) {
+        hasMoved = true;
+        followerX = mouseX;
+        followerY = mouseY;
+      }
+    };
+
+    const updateCursor = () => {
+      if (dot) {
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      }
+
+      // Smooth lerping: 0.12 provides a natural lag distance
+      followerX += (mouseX - followerX) * 0.12;
+      followerY += (mouseY - followerY) * 0.12;
+
+      if (follower) {
+        follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
+      }
+      cursorRafId = requestAnimationFrame(updateCursor);
+    };
+
+    const handleMouseOver = (e) => {
+      if (!follower) return;
+      const target = e.target;
+      const isInteractive = target.closest('a, button, .icon-btn, .add-btn, .nav-circle-btn, .see-product-btn, li, .shop-nav-link, .logo');
+      const isCarousel = target.closest('.carousel-track, .carousel-card');
+
+      if (isInteractive) {
+        follower.classList.add('cursor-hover');
+      } else {
+        follower.classList.remove('cursor-hover');
+      }
+
+      if (isCarousel) {
+        follower.classList.add('cursor-drag');
+        follower.setAttribute('data-label', 'DRAG');
+      } else {
+        follower.classList.remove('cursor-drag');
+        follower.removeAttribute('data-label');
+      }
+    };
+
+    const handleMouseOut = () => {
+      if (follower) {
+        follower.classList.remove('cursor-hover', 'cursor-drag');
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mouseout', handleMouseOut);
+    cursorRafId = requestAnimationFrame(updateCursor);
+
     return () => {
       observer.disconnect();
       clearTimeout(timer);
       if (rafId) cancelAnimationFrame(rafId);
+      if (cursorRafId) cancelAnimationFrame(cursorRafId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('mouseout', handleMouseOut);
     };
   }, []);
 
@@ -223,6 +297,10 @@ my fits.`,
 
   return (
     <>
+      {/* Custom Cursor Elements */}
+      <div className="custom-cursor-dot"></div>
+      <div className="custom-cursor-follower"></div>
+
       {/* PRELOADER 
       <div className={`preloader ${loaded ? 'preloader-out' : ''}`}>
         <div className="preloader-inner">
@@ -235,45 +313,46 @@ my fits.`,
       */}
 
       <div className="main-wrapper" ref={mainWrapperRef}>
-      {/* SECTION 1: HERO */}
-      <section className="app-container">
-        {/* Background Dashed Grid Lines */}
-        <div className="grid-lines">
-          <div className="grid-line-v1"></div>
-          <div className="grid-line-v2"></div>
-          <div className="grid-line-h1"></div>
-          <div className="grid-line-h2"></div>
-        </div>
+        {/* SECTION 1: HERO */}
+        <section className="app-container">
+          {/* Background Dashed Grid Lines */}
+          <div className="grid-lines">
+            <div className="grid-line-v1"></div>
+            <div className="grid-line-v2"></div>
+            <div className="grid-line-h1"></div>
+            <div className="grid-line-h2"></div>
+          </div>
 
-        {/* Header Navigation */}
-        <header className="hero-anim-down">
-          <div className="header-left">
-            <button className="icon-btn" aria-label="Menu">
-              <MenuIcon />
-            </button>
-            <span 
-              className="shop-nav-link" 
-              onClick={() => navigate('/products')} 
-              style={{ cursor: 'pointer', marginLeft: '20px', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-color)', transition: 'opacity 0.3s ease' }}
-              onMouseEnter={(e) => e.target.style.opacity = '0.6'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}
-            >
-              Shop
-            </span>
-          </div>
-          <h1 className="logo" onClick={() => navigate('/products')} style={{ cursor: 'pointer' }}>opiumcart</h1>
-          <div className="header-right">
-            <button className="icon-btn" aria-label="Search">
-              <SearchIcon />
-            </button>
-            <button className="icon-btn" aria-label="Cart">
-              <BagIcon />
-            </button>
-            <button className="icon-btn" aria-label="Profile">
-              <UserIcon />
-            </button>
-          </div>
-        </header>
+          {/* Header Navigation */}
+          <header className="hero-anim-down">
+            <div className="header-left">
+              <button className="icon-btn" aria-label="Menu">
+                <MenuIcon />
+              </button>
+              <span 
+                className="shop-nav-link" 
+                onClick={() => navigate('/products')} 
+                style={{ cursor: 'pointer', marginLeft: '20px', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--text-color)', transition: 'opacity 0.3s ease' }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.6'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
+              >
+                Shop
+              </span>
+            </div>
+            <h1 className="logo" onClick={() => navigate('/products')} style={{ cursor: 'pointer' }}>opiumcart</h1>
+            <div className="header-right">
+              <button className="icon-btn" aria-label="Search">
+                <SearchIcon />
+              </button>
+              <button className="icon-btn" aria-label="Cart">
+                <BagIcon />
+              </button>
+              <button className="icon-btn" aria-label="Profile">
+                <UserIcon />
+              </button>
+            </div>
+          </header>
+
 
         {/* Giant Typography (Behind Model) */}
         <div className="giant-text text-where hero-anim-up" style={{ animationDelay: '0.1s' }}>where</div>
@@ -337,6 +416,93 @@ my fits.`,
           <span><CloverIcon /> Spotify</span>
           <span><CloverIcon /> Dropbox</span>
           <span><CloverIcon /> Remessa</span>
+        </div>
+      </section>
+
+      {/* SECTION 5: CAROUSEL */}
+      <section className="carousel-section">
+        {/* Background Dashed Grid Lines */}
+        <div className="grid-lines">
+          <div className="grid-line-v1"></div>
+          <div className="grid-line-v2"></div>
+          <div className="grid-line-h1"></div>
+          <div className="grid-line-h2"></div>
+        </div>
+
+        {/* Top Header Row */}
+        <div className="carousel-header">
+          <div className="c-header-col-1 reveal-up">
+            <h2>©opiumcart -<br />jacket momento</h2>
+          </div>
+          <div className="c-header-col-2 reveal-up" style={{ transitionDelay: '0.1s' }}>
+            <span className="c-header-year">2026</span>
+          </div>
+          <div className="c-header-col-3 reveal-up" style={{ transitionDelay: '0.2s' }}>
+            <span className="c-header-label">[Other]</span>
+          </div>
+          <div className="c-header-col-4 reveal-up" style={{ transitionDelay: '0.3s' }}>
+            <div className="c-nav-buttons">
+              <button className="nav-circle-btn prev-btn" onClick={handlePrevSlide} aria-label="Previous Slide">
+                ←
+              </button>
+              <button className="nav-circle-btn next-btn" onClick={handleNextSlide} aria-label="Next Slide">
+                →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Horizontal Image Track */}
+        <div className="carousel-body reveal-up" style={{ transitionDelay: '0.4s' }}>
+          <div 
+            className="carousel-track" 
+            style={{ transform: `translateX(calc(50vw - var(--card-half-width) - (var(--card-width) + var(--card-gap)) * ${activeSlide}))` }}
+          >
+            {carouselSlides.map((slide, index) => {
+              const isActive = index === activeSlide;
+              return (
+                <div key={slide.id} className={`carousel-card ${isActive ? 'active' : ''}`}>
+                  <div 
+                    className="carousel-image" 
+                    style={{ backgroundImage: `url(${slide.image})` }}
+                  ></div>
+                  <div className={`carousel-caption ${isActive ? 'visible' : ''}`}>
+                    <p>{slide.text}</p>
+                    {/* Carousel Progress Indicators */}
+                    <div className="slide-indicators">
+                      {carouselSlides.map((_, idx) => (
+                        <div
+                          key={idx}
+                          className={`indicator ${idx === activeSlide ? 'active' : ''}`}
+                          onClick={() => setActiveSlide(idx)}
+                        ></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Marquee Reused */}
+        <div className="page3-marquee-container carousel-footer-marquee">
+          <div className="page3-marquee-content">
+            {/* First Set */}
+            <span>STYLING</span> <span className="plus">+</span>
+            <span>CRAFTED STORIES</span> <span className="plus">+</span>
+            <span>PREMIUM MATERIALS</span> <span className="plus">+</span>
+            <span>PREMIUM FABRICS</span> <span className="plus">+</span>
+            <span>TIMELESS CUTS</span> <span className="plus">+</span>
+            <span>URBAN INFLUENCE</span> <span className="plus">+</span>
+            {/* Duplicated for seamless scrolling */}
+            <span>STYLING</span> <span className="plus">+</span>
+            <span>CRAFTED STORIES</span> <span className="plus">+</span>
+            <span>PREMIUM MATERIALS</span> <span className="plus">+</span>
+            <span>PREMIUM FABRICS</span> <span className="plus">+</span>
+            <span>TIMELESS CUTS</span> <span className="plus">+</span>
+            <span>URBAN INFLUENCE</span> <span className="plus">+</span>
+          </div>
         </div>
       </section>
 
@@ -548,96 +714,9 @@ my fits.`,
         </div>
       </section>
 
-      {/* SECTION 5: CAROUSEL */}
-      <section className="carousel-section">
-        {/* Background Dashed Grid Lines */}
-        <div className="grid-lines">
-          <div className="grid-line-v1"></div>
-          <div className="grid-line-v2"></div>
-          <div className="grid-line-h1"></div>
-          <div className="grid-line-h2"></div>
-        </div>
 
-        {/* Top Header Row */}
-        <div className="carousel-header">
-          <div className="c-header-col-1 reveal-up">
-            <h2>©opiumcart -<br />jacket momento</h2>
-          </div>
-          <div className="c-header-col-2 reveal-up" style={{ transitionDelay: '0.1s' }}>
-            <span className="c-header-year">2026</span>
-          </div>
-          <div className="c-header-col-3 reveal-up" style={{ transitionDelay: '0.2s' }}>
-            <span className="c-header-label">[Other]</span>
-          </div>
-          <div className="c-header-col-4 reveal-up" style={{ transitionDelay: '0.3s' }}>
-            <div className="c-nav-buttons">
-              <button className="nav-circle-btn prev-btn" onClick={handlePrevSlide} aria-label="Previous Slide">
-                ←
-              </button>
-              <button className="nav-circle-btn next-btn" onClick={handleNextSlide} aria-label="Next Slide">
-                →
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Horizontal Image Track */}
-        <div className="carousel-body reveal-up" style={{ transitionDelay: '0.4s' }}>
-          <div 
-            className="carousel-track" 
-            style={{ transform: `translateX(calc(50vw - var(--card-half-width) - (var(--card-width) + var(--card-gap)) * ${activeSlide}))` }}
-          >
-            {carouselSlides.map((slide, index) => {
-              const isActive = index === activeSlide;
-              return (
-                <div key={slide.id} className={`carousel-card ${isActive ? 'active' : ''}`}>
-                  <div 
-                    className="carousel-image" 
-                    style={{ backgroundImage: `url(${slide.image})` }}
-                  ></div>
-                  <div className={`carousel-caption ${isActive ? 'visible' : ''}`}>
-                    <p>{slide.text}</p>
-                    {/* Carousel Progress Indicators */}
-                    <div className="slide-indicators">
-                      {carouselSlides.map((_, idx) => (
-                        <div
-                          key={idx}
-                          className={`indicator ${idx === activeSlide ? 'active' : ''}`}
-                          onClick={() => setActiveSlide(idx)}
-                        ></div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Bottom Marquee Reused */}
-        <div className="page3-marquee-container carousel-footer-marquee">
-          <div className="page3-marquee-content">
-            {/* First Set */}
-            <span>STYLING</span> <span className="plus">+</span>
-            <span>CRAFTED STORIES</span> <span className="plus">+</span>
-            <span>PREMIUM MATERIALS</span> <span className="plus">+</span>
-            <span>PREMIUM FABRICS</span> <span className="plus">+</span>
-            <span>TIMELESS CUTS</span> <span className="plus">+</span>
-            <span>URBAN INFLUENCE</span> <span className="plus">+</span>
-            {/* Duplicated for seamless scrolling */}
-            <span>STYLING</span> <span className="plus">+</span>
-            <span>CRAFTED STORIES</span> <span className="plus">+</span>
-            <span>PREMIUM MATERIALS</span> <span className="plus">+</span>
-            <span>PREMIUM FABRICS</span> <span className="plus">+</span>
-            <span>TIMELESS CUTS</span> <span className="plus">+</span>
-            <span>URBAN INFLUENCE</span> <span className="plus">+</span>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6: COLLECTIONS SPLIT ACCORDION */}
+      {/* SECTION 6: COLLECTIONS SPLIT ACCORDION
       <section className="collections-section">
-        {/* Background Dashed Grid Lines */}
         <div className="grid-lines">
           <div className="grid-line-v1"></div>
           <div className="grid-line-v2"></div>
@@ -646,7 +725,6 @@ my fits.`,
         </div>
 
         <div className="collections-split-container">
-          {/* Left Column: Sliced Large Campaign Graphic */}
           <div className="c-split-left-col">
             <span className="c-split-tagline reveal-up" style={{ transitionDelay: '0.1s' }}>
               From enduring classics to daring statement<br />
@@ -654,12 +732,10 @@ my fits.`,
             </span>
 
             <div className="c-split-image-container reveal-scale" style={{ transitionDelay: '0.2s' }}>
-              {/* Sliced Top Half */}
               <div 
                 className="c-split-image-top" 
                 style={{ backgroundImage: `url(${collectionsData[activeCollection].leftImage})` }}
               ></div>
-              {/* Sliced Bottom Half */}
               <div 
                 className="c-split-image-bottom" 
                 style={{ backgroundImage: `url(${collectionsData[activeCollection].leftImage})` }}
@@ -669,7 +745,6 @@ my fits.`,
             <span className="c-split-bottom-label reveal-up" style={{ transitionDelay: '0.3s' }}>Being Part Of Our journey.</span>
           </div>
 
-          {/* Right Column: Interactive Accordion list */}
           <div className="c-split-right-col">
             <div className="c-accordion-list">
               {collectionsData.map((item, idx) => {
@@ -681,7 +756,6 @@ my fits.`,
                     style={{ transitionDelay: `${0.4 + idx * 0.1}s` }}
                     onClick={() => setActiveCollection(idx)}
                   >
-                    {/* Collapsed Row Header */}
                     <div className="c-accordion-header">
                       <h3>{item.title}</h3>
                       {!isOpen && (
@@ -691,7 +765,6 @@ my fits.`,
                       )}
                     </div>
 
-                    {/* Expanded Content Grid */}
                     {isOpen && (
                       <div className="c-accordion-expanded-body">
                         <div className="c-expanded-body-left">
@@ -715,6 +788,7 @@ my fits.`,
           </div>
         </div>
       </section>
+      */}
 
       {/* SECTION 7: EDITORIAL FOOTER */}
       <footer className="editorial-footer">

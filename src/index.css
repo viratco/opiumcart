@@ -227,6 +227,7 @@ header {
   z-index: 20;
 }
 
+
 .header-left,
 .header-right {
   display: flex;
@@ -2751,5 +2752,98 @@ header {
 
   .footer-bottom-links a, .footer-copyright {
     font-size: 3.5vw;
+  }
+}
+
+/* ==========================================================================
+   PREMIUM CUSTOM CURSOR STYLING
+   ========================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a, button, [role="button"], .icon-btn, .nav-circle-btn, li, .shop-nav-link, .logo, .avatar, .add-btn {
+    cursor: none !important;
+  }
+
+  .custom-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate3d(-100px, -100px, 0);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .custom-cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px; /* offset half width */
+    margin-left: -15px; /* offset half height */
+    border: 1px solid rgba(17, 17, 17, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate3d(-100px, -100px, 0);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                margin-top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hovering over links/buttons */
+  .custom-cursor-follower.cursor-hover {
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    margin-left: -22px;
+    background-color: rgba(17, 17, 17, 0.05);
+    border-color: rgba(17, 17, 17, 0.8);
+  }
+
+  /* Hovering over carousel (DRAG mode) */
+  .custom-cursor-follower.cursor-drag {
+    width: 64px;
+    height: 64px;
+    margin-top: -32px;
+    margin-left: -32px;
+    background-color: #111111;
+    border-color: #111111;
+  }
+
+  .custom-cursor-follower::after {
+    content: attr(data-label);
+    font-family: 'Inter', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .custom-cursor-follower.cursor-drag::after {
+    opacity: 1;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-follower {
+    display: none !important;
   }
 }
